@@ -1,6 +1,7 @@
 
 from flask import Flask, request, jsonify
 import configparser
+import os
 
 config = configparser.RawConfigParser()
 config.read('config.cfg')
@@ -38,4 +39,8 @@ def health_check():
     return jsonify({'health': 'ok'}), 200
 
 
-app.run()
+if __name__ == '__main__':
+    if os.environ.get('FLASK_ENV') == 'development':
+        app.run(port=5001)  # Dev server
+    else:
+        print("Use Gunicorn for production")
